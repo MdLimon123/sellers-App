@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:sellers_app/mainScreen/home_screen.dart';
+import 'package:sellers_app/authScreens/auth_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,7 +13,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   initTimer() {
     Timer(const Duration(seconds: 3), () async {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => AuthScreen()));
     });
   }
 
