@@ -10,12 +10,17 @@ class SigninScreen extends StatefulWidget {
 class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return  SingleChildScrollView(
       child: Column(
         children: [
-          Text(
-            'Signin',
-            style: TextStyle(fontSize: 30, color: Colors.grey),
+
+          Container(
+            height: 270,
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset("assets/images/seller.png"),
+            ),
           )
         ],
       ),
