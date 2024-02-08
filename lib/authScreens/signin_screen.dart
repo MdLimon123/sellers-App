@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:sellers_app/Widgets/custom_text_field.dart';
 
-class SigninScreen extends StatefulWidget {
-  const SigninScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<SigninScreen> createState() => _SigninScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen> {
+class _SignInScreenState extends State<SignInScreen> {
+
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
@@ -21,7 +28,43 @@ class _SigninScreenState extends State<SigninScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Image.asset("assets/images/seller.png"),
             ),
-          )
+          ),
+          Form(
+            key: _formKey,
+              child: Column(
+            children: [
+              CustomTextField(
+                textEditingController: emailTextEditingController,
+                hintString: "Email",
+                iconData: Icons.email,
+                isObscure: false,
+                enable: true,
+
+              ),
+              CustomTextField(
+                textEditingController: passwordTextEditingController,
+                hintString: "Password",
+                iconData: Icons.lock,
+                isObscure: true,
+                enable: true,
+
+              ),
+
+              ElevatedButton(
+                  onPressed: (){},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10)
+                  ),
+                  child: const Text("Login",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),
+                  ))
+
+            ],
+          ))
         ],
       ),
     );

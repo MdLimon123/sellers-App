@@ -44,7 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
               )),
           body: Container(
             color: Colors.black87,
-            child: const TabBarView(children: [SigninScreen(), SignupScreen()]),
+            child: const TabBarView(children: [SignInScreen(), SignupScreen()]),
           ),
         ));
   }
