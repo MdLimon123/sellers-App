@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sellers_app/Splash/splash_screen.dart';
 
-void main() {
+Future<void> main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Permission.locationWhenInUse.isDenied.then((valueOfPermission){
+    if(valueOfPermission){
+      Permission.locationWhenInUse.request();
+    }
+  });
+
   runApp(const MyApp());
 }
 
