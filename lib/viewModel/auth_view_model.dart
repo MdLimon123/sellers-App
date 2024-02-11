@@ -72,6 +72,7 @@ class AuthViewModel {
     });
 
     if (currentFirebaseUser == null) {
+      FirebaseAuth.instance.signOut();
       return;
     }
 
@@ -105,6 +106,7 @@ class AuthViewModel {
         .set({
       "uid": currentFirebaseUser.uid,
       "email": email,
+      "image":downloadUrl,
       "name": name,
       "phone": phone,
       "address": locationAddress,
@@ -114,12 +116,79 @@ class AuthViewModel {
       "longitude": position!.longitude
     });
 
-    sharedPreferences = await SharedPreferences.getInstance();
+
     await sharedPreferences!.setString("uid", currentFirebaseUser.uid);
     await sharedPreferences!.setString("email", email);
     await sharedPreferences!.setString("name", name);
     await sharedPreferences!.setString("imageUrl", downloadUrl);
 
 
+  }
+
+
+  validateSignInForm(String email, String password, BuildContext context)async{
+
+    if(email.isNotEmpty && password.isNotEmpty){
+
+      commonViewModel.showSnackBar('checking credentials...', context);
+
+   User? currentFirebaseUser = await loginUser(email, password, context);
+
+  await readDataFromFirestoreAndSetDataLocally(currentFirebaseUser, context);
+
+  Navigator.push(context, MaterialPageRoute(builder: (_)=> HomeScreen()));
+
+    }else{
+      commonViewModel.showSnackBar('Email and Password are required', context);
+      return;
+    }
+  }
+
+  loginUser(email, password, context)async{
+
+    User? currentFirebaseUser;
+
+   await FirebaseAuth.instance.signInWithEmailAndPassword
+      (email: email,
+        password: password).then((valueAuth){
+          currentFirebaseUser = valueAuth.user;
+    }).catchError((errorMsg){
+      commonViewModel.showSnackBar(errorMsg, context);
+    });
+
+    if(currentFirebaseUser == null){
+      FirebaseAuth.instance.signOut();
+      return;
+    }
+
+    return currentFirebaseUser;
+  }
+
+  readDataFromFirestoreAndSetDataLocally(User? currentFirebaseUser, BuildContext context)async{
+
+    await FirebaseFirestore.instance.collection('sellers')
+        .doc(currentFirebaseUser!.uid)
+        .get().then((dataSnapshot){
+
+          if(dataSnapshot.exists){
+            if(dataSnapshot.data()!['status'] == 'approved'){
+
+
+              sharedPreferences!.setString("uid", currentFirebaseUser.uid);
+              sharedPreferences!.setString("email", dataSnapshot.data()!['email']);
+              sharedPreferences!.setString("name", dataSnapshot.data()!['name']);
+              sharedPreferences!.setString("imageUrl", dataSnapshot.data()!['image']);
+
+            }else{
+              commonViewModel.showSnackBar('Your are blocked admin. Contact: limon222019@gmail.com', context);
+              FirebaseAuth.instance.signOut();
+              return;
+            }
+          }else{
+            commonViewModel.showSnackBar('This seller record do not exist', context);
+            FirebaseAuth.instance.signOut();
+            return;
+          }
+    });
   }
 }
