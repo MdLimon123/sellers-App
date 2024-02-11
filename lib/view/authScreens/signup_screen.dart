@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sellers_app/viewModel/common_view_model.dart';
+import 'package:sellers_app/global/global_vars.dart';
+import '../../global/global_instances.dart';
 import '../Widgets/custom_text_field.dart';
 
 
@@ -22,7 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController locationTextEditingController = TextEditingController();
 
-  CommonViewModel commonViewModel = CommonViewModel();
+
 
   XFile? imageFile;
   ImagePicker pickedImage = ImagePicker();
@@ -143,7 +144,17 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: 20,),
                   ElevatedButton(
-                      onPressed: (){},
+                      onPressed: ()async{
+                       await authViewModel.validateSignUpForm(
+                            imageFile,
+                            passwordTextEditingController.text.trim(),
+                            confirmPasswordTextEditingController.text.trim(),
+                            emailTextEditingController.text.trim(),
+                            nameTextEditingController.text.trim(),
+                            phoneTextEditingController.text.trim(),
+                            fullAddress,
+                            context);
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blueAccent,
                           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10)
