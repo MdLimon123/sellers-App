@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sellers_app/Widgets/custom_text_field.dart';
+import 'package:sellers_app/viewModel/common_view_model.dart';
+import '../Widgets/custom_text_field.dart';
+
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -23,6 +22,8 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController locationTextEditingController = TextEditingController();
 
+  CommonViewModel commonViewModel = CommonViewModel();
+
   XFile? imageFile;
   ImagePicker pickedImage = ImagePicker();
 
@@ -31,21 +32,6 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       imageFile;
     });
-  }
-
-  Position? position;
-  List<Placemark>? placeMark;
-  String fullAddress = "";
-
-  getCurrentLocation()async{
-
-    Position cPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    placeMark = await placemarkFromCoordinates(cPosition.latitude, cPosition.longitude);
-    Placemark placeMarkVar = placeMark![0];
-
-    fullAddress = "${placeMarkVar.subThoroughfare} ${placeMarkVar.thoroughfare},${placeMarkVar.subLocality} ${placeMarkVar.locality},${placeMarkVar.subAdministrativeArea},${placeMarkVar.administrativeArea} ${placeMarkVar.postalCode}, ${placeMarkVar.country}";
-
-    locationTextEditingController.text = fullAddress;
   }
 
 
@@ -136,8 +122,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     width: 398,
                     alignment: Alignment.center,
                     child: ElevatedButton.icon(
-                        onPressed: (){
-                          getCurrentLocation();
+                        onPressed: () async{
+                       String address = await commonViewModel.getCurrentLocation();
+                       setState(() {
+                         locationTextEditingController.text = address;
+                       });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,

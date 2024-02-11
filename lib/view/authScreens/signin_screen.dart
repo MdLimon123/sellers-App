@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sellers_app/Widgets/custom_text_field.dart';
+
+import '../Widgets/custom_text_field.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

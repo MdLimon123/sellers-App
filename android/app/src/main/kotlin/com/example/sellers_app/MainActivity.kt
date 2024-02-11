@@ -1,4 +1,4 @@
-package com.example.sellers_app
+package com.limon.sellersapp
 
 import io.flutter.embedding.android.FlutterActivity
 
