@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sellers_app/view/Widgets/my_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,8 +12,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
       appBar: AppBar(
         title: Text('Home Page'),
+        centerTitle: true,
       ),
     );
   }
